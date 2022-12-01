@@ -1,6 +1,6 @@
-from trading.alpha_vantage_wrapper.alpha_vantage_wrapper import AlphaVantageWrapper
+from trading.lemon_markets.lemon_markets_wrapper import LemonMarketsWrapper
 
 
-class UniversalWrapper(AlphaVantageWrapper):
-    def __init__(self, sandbox):
-        super().__init__(sandbox)
+class UniversalWrapper(LemonMarketsWrapper):
+    def __init__(self):
+        super().__init__()
