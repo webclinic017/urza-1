@@ -1,12 +1,12 @@
 import unittest
 from time import sleep
 from datetime import datetime, timedelta
-from trading.universal_wrapper import UniversalWrapper
+from trading.universal_market_wrapper import UniversalMarketWrapper
 
 
 class UniversalWrapperTest(unittest.TestCase):
     def setUp(self):
-        self.wrapper = UniversalWrapper()
+        self.wrapper = UniversalMarketWrapper()
 
     def test_get_latest_quote(self):
         result = self.wrapper.get_quote("AAPL")
