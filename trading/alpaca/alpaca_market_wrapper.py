@@ -1,16 +1,14 @@
 from trading.alpaca.credentials import api_key, secret_key
-import json
-# Deprecated API for News Data
-from alpaca_trade_api.stream import NewsDataStream
-from alpaca_trade_api.common import URL
-
 from alpaca.data import StockDataStream
 from alpaca.data.historical import StockHistoricalDataClient
 from alpaca.data.requests import StockLatestQuoteRequest, StockBarsRequest
 from alpaca.data.timeframe import TimeFrame
+# Deprecated API for News Data
+from alpaca_trade_api.stream import NewsDataStream
+from alpaca_trade_api.common import URL
 
 
-class AlpacaWrapper:
+class AlpacaMarketWrapper:
     def __init__(self):
         self.quote_stream = StockDataStream(api_key, secret_key, raw_data=True)
         self.stock_client = StockHistoricalDataClient(api_key, secret_key, raw_data=True)
@@ -18,13 +16,12 @@ class AlpacaWrapper:
         self.news_stream = NewsDataStream(api_key, secret_key,
                                           base_url=URL("wss://stream.data.alpaca.markets/v1beta1/news"),
                                           raw_data=True)
-        self.test = None
 
     async def quote_handler(self, quote):
-        self.test = quote
+        pass
 
     async def news_handler(self, news):
-        self.test = news
+        pass
 
     def start_quote_stream(self, symbols):
         self.quote_stream.subscribe_quotes(self.quote_handler, symbols)
@@ -59,15 +56,15 @@ class AlpacaWrapper:
                 return [(quotes[symbol]["t"], quotes[symbol]["as"]) for symbol in symbols]
 
     def get_bar_data(self, symbols, start_date, frequency="daily"):
-        if frequency.startswith("da"):
+        if frequency.startswith("day"):
             frequency = TimeFrame.Day
-        elif frequency.startswith("mon"):
+        elif frequency.startswith("month"):
             frequency = TimeFrame.Month
         elif frequency.startswith("week"):
             frequency = TimeFrame.Week
-        elif frequency.startswith("hou"):
+        elif frequency.startswith("hour"):
             frequency = TimeFrame.Hour
-        elif frequency.startswith("min"):
+        elif frequency.startswith("minute"):
             frequency = TimeFrame.Minute
 
         request_params = StockBarsRequest(symbol_or_symbols=symbols, timeframe=frequency, start=start_date)
