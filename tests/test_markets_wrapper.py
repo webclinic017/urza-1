@@ -19,8 +19,8 @@ class UniversalWrapperTest(unittest.TestCase):
         self.assertIsInstance(result[0][0], str)
         self.assertTrue(isinstance(result[0][1], (float, int)))
 
-    def test_get_bar_data(self):
-        result = self.wrapper.get_bar_data("AAPL", start_date=datetime.now() - timedelta(days=5))
+    def test_get_ohlc_data(self):
+        result = self.wrapper.get_ohlc_data("AAPL", start_date=datetime.now() - timedelta(days=5))
         self.assertIsInstance(result, list)
         self.assertIsInstance(result[0], dict)
         self.assertIsInstance(result[0]["c"], float)
@@ -29,8 +29,8 @@ class UniversalWrapperTest(unittest.TestCase):
         self.assertIsInstance(result[0]["o"], float)
         self.assertIsInstance(result[0]["t"], str)
 
-    def test_get_multi_bar_data(self):
-        result = self.wrapper.get_bar_data(["AAPL", "GOOGL"], start_date=datetime.now() - timedelta(days=5))
+    def test_get_multi_ohlc_data(self):
+        result = self.wrapper.get_ohlc_data(["AAPL", "GOOGL"], start_date=datetime.now() - timedelta(days=5))
         self.assertIsInstance(result, list)
         self.assertIsInstance(result[0], list)
         self.assertIsInstance(result[0][0], dict)

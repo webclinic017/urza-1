@@ -55,8 +55,8 @@ class AlpacaMarketWrapper:
             else:
                 return [(quotes[symbol]["t"], quotes[symbol]["as"]) for symbol in symbols]
 
-    def get_bar_data(self, symbols, start_date, frequency="daily"):
-        if frequency.startswith("day"):
+    def get_ohlc_data(self, symbols, start_date, frequency):
+        if frequency.startswith("da"):
             frequency = TimeFrame.Day
         elif frequency.startswith("month"):
             frequency = TimeFrame.Month
@@ -66,6 +66,8 @@ class AlpacaMarketWrapper:
             frequency = TimeFrame.Hour
         elif frequency.startswith("minute"):
             frequency = TimeFrame.Minute
+        else:
+            ValueError("Invalid frequency specified.")
 
         request_params = StockBarsRequest(symbol_or_symbols=symbols, timeframe=frequency, start=start_date)
         bars = self.stock_client.get_stock_bars(request_params)
