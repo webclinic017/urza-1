@@ -11,4 +11,4 @@ def format_currency(amount):
 
 def create_idempotency(length=4):
     """Create Idempotency Key to avoid multiple requests."""
-    ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+    return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
