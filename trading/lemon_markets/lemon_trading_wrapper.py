@@ -37,3 +37,13 @@ class LemonTradingWrapper:
                                data=json.dumps({"pin": pin}),
                                headers={"Authorization": f"Bearer {self.key}"})
         return request.json()
+
+    def get_orders(self):
+        request = requests.get(self.base_url,
+                               headers={"Authorization": f"Bearer {self.key}"})
+        return request.json()
+
+    def delete_order(self, order_id):
+        request = requests.delete(f"{self.base_url}/{order_id}",
+                                  headers={"Authorization": f"Bearer {self.key}"})
+        return request.json()
