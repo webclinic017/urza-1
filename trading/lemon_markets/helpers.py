@@ -10,5 +10,11 @@ def format_currency(amount):
 
 
 def create_idempotency(length=4):
-    """Create Idempotency Key to avoid multiple requests."""
+    """Create idempotency key to avoid multiple requests."""
     return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+
+def concat_ISINs(ISINs):
+    """Concat ISINs for multi-result request"""
+    if isinstance(ISINs, str):
+        return ISINs
+    return ",".join(isin for isin in ISINs)
