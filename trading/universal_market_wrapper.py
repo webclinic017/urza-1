@@ -7,8 +7,27 @@ class UniversalMarketWrapper(LemonMarketsWrapper, AlpacaMarketWrapper):
         LemonMarketsWrapper.__init__(self)
         AlpacaMarketWrapper.__init__(self)
 
-    def get_quote(self, symbol_or_ISIN, price="ask"):
-        if len(symbol_or_ISIN) == 12:
-            return self.get_quote_by_isin(symbol_or_ISIN, price)
+    def get_quote(self, symbols_or_isins, price="ask"):
+        if isinstance(symbols_or_isins, str):
+            if len(symbols_or_isins) == 12:
+                return self.get_quote_by_isin(symbols_or_isins, price)
+            else:
+                return self.get_quote_by_symbol(symbols_or_isins, price)
         else:
-            return self.get_quote_by_symbol(symbol_or_ISIN, price)
+            if len(symbols_or_isins[0]) == 12:
+                return self.get_quote_by_isin(symbols_or_isins, price)
+            else:
+                return self.get_quote_by_symbol(symbols_or_isins, price)
+
+    def get_ohlc_data(self, symbols_or_isins, start_date, frequency):
+        if isinstance(symbols_or_isins, str):
+            if len(symbols_or_isins) == 12:
+                return self.get_ohlc_data_by_isin(symbols_or_isins, start_date, frequency)
+            else:
+                return self.get_ohlc_data_by_symbol(symbols_or_isins, start_date, frequency)
+        else:
+            if len(symbols_or_isins[0]) == 12:
+                return self.get_ohlc_data_by_isin(symbols_or_isins, start_date, frequency)
+            else:
+                return self.get_ohlc_data_by_symbol(symbols_or_isins, start_date, frequency)
+
