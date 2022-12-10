@@ -39,7 +39,7 @@ class AlpacaMarketWrapper:
     def stop_news_stream(self):
         self.news_stream.close()
 
-    def get_quote(self, symbols, price="ask"):
+    def get_quote_by_symbol(self, symbols, price="ask"):
         request_params = StockLatestQuoteRequest(symbol_or_symbols=symbols)
         quotes = self.stock_client.get_stock_latest_quote(request_params)
 
