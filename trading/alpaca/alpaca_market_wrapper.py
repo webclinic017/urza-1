@@ -46,16 +46,17 @@ class AlpacaMarketWrapper:
         # If only a single symbol was given
         if isinstance(symbols, str):
             if price == "bid":
-                return quotes[symbols]["t"], quotes[symbols]["bs"]
+                return {symbols: {quotes[symbols]["t"]: quotes[symbols]["bp"]}}
             else:
-                return quotes[symbols]["t"], quotes[symbols]["as"]
+                return {symbols: {quotes[symbols]["t"]: quotes[symbols]["ap"]}}
         else:
             if price == "bid":
-                return [(quotes[symbol]["t"], quotes[symbol]["bs"]) for symbol in symbols]
+                return [{symbol: {quotes[symbol]["t"]: quotes[symbol]["bp"]}} for symbol in symbols]
             else:
-                return [(quotes[symbol]["t"], quotes[symbol]["as"]) for symbol in symbols]
+                return [{symbol: {quotes[symbol]["t"]: quotes[symbol]["ap"]}} for symbol in symbols]
 
-    def get_ohlc_data(self, symbols, start_date, frequency):
+
+    def get_ohlc_data_by_symbol(self, symbols, start_date, frequency):
         if frequency.startswith("da"):
             frequency = TimeFrame.Day
         elif frequency.startswith("month"):

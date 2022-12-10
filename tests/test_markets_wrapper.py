@@ -1,6 +1,6 @@
 import unittest
-from time import sleep
 from datetime import datetime, timedelta
+
 from trading.universal_market_wrapper import UniversalMarketWrapper
 
 
@@ -11,8 +11,8 @@ class UniversalWrapperTest(unittest.TestCase):
     def test_get_latest_quote(self):
         result_symbol = self.wrapper.get_quote("AAPL")
         print(result_symbol)
-        self.assertIsInstance(result_symbol[0], str)
-        self.assertTrue(isinstance(result_symbol[1], (float, int)))
+        self.assertIsInstance(result_symbol.keys()[0], str)
+        self.assertTrue(isinstance(result_symbol.values()[0].values()[0], (float, int)))
 
         result_isin = self.wrapper.get_quote("US0378331005")
         print(result_isin)
@@ -31,7 +31,9 @@ class UniversalWrapperTest(unittest.TestCase):
         self.assertTrue(isinstance(result_isin[0][1], (float, int)))
 
     def test_get_ohlc_data(self):
-        result = self.wrapper.get_ohlc_data("US0378331005", start_date=datetime.now() - timedelta(days=5))
+        result = self.wrapper.get_ohlc_data("US0378331005",
+                                            start_date=datetime.now() - timedelta(days=5),
+                                            frequency="minutely")
         self.assertIsInstance(result, list)
         self.assertIsInstance(result[0], dict)
         self.assertIsInstance(result[0]["c"], float)
@@ -41,7 +43,9 @@ class UniversalWrapperTest(unittest.TestCase):
         self.assertIsInstance(result[0]["t"], str)
 
     def test_get_multi_ohlc_data(self):
-        result = self.wrapper.get_ohlc_data(["US0378331005", "US02079K3059"], start_date=datetime.now() - timedelta(days=5))
+        result = self.wrapper.get_ohlc_data(["US0378331005", "US02079K3059"],
+                                            start_date=datetime.now() - timedelta(days=5),
+                                            frequency="minutely")
         self.assertIsInstance(result, list)
         self.assertIsInstance(result[0], list)
         self.assertIsInstance(result[0][0], dict)

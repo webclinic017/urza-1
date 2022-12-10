@@ -14,7 +14,7 @@ class LemonMarketsWrapper:
                                headers={"Authorization": f"Bearer {market_data_key}"})
         return request.json()
 
-    def get_ohlc_data(self, ISINs, start_date, frequency):
+    def get_ohlc_data_by_isin(self, ISINs, start_date, frequency):
         if frequency.startswith("da"):
             frequency = "d1"
         elif frequency.startswith("hour"):
