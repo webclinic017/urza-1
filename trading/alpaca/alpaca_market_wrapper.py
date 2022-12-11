@@ -39,22 +39,11 @@ class AlpacaMarketWrapper:
     def stop_news_stream(self):
         self.news_stream.close()
 
-    def get_quote_by_symbol(self, symbols, price="ask"):
+    def get_quote_by_symbol(self, symbols):
         request_params = StockLatestQuoteRequest(symbol_or_symbols=symbols)
         quotes = self.stock_client.get_stock_latest_quote(request_params)
-
-        # If only a single symbol was given
-        if isinstance(symbols, str):
-            if price == "bid":
-                return {symbols: {quotes[symbols]["t"]: quotes[symbols]["bp"]}}
-            else:
-                return {symbols: {quotes[symbols]["t"]: quotes[symbols]["ap"]}}
-        else:
-            if price == "bid":
-                return [{symbol: {quotes[symbol]["t"]: quotes[symbol]["bp"]}} for symbol in symbols]
-            else:
-                return [{symbol: {quotes[symbol]["t"]: quotes[symbol]["ap"]}} for symbol in symbols]
-
+        return {symbol: {"t": quotes[symbol]["t"], "a_p": quotes[symbol]["ap"], "a_s": quotes[symbol]["as"],
+                         "b_p": quotes[symbol]["bp"], "b_s": quotes[symbol]["bs"]} for symbol in quotes.keys()}
 
     def get_ohlc_data_by_symbol(self, symbols, start_date, frequency):
         if frequency.startswith("da"):
@@ -71,10 +60,5 @@ class AlpacaMarketWrapper:
             ValueError("Invalid frequency specified.")
 
         request_params = StockBarsRequest(symbol_or_symbols=symbols, timeframe=frequency, start=start_date)
-        bars = self.stock_client.get_stock_bars(request_params)
-
-        # If only a single symbol was given
-        if isinstance(symbols, str):
-            return bars[symbols]
-        else:
-            return [bars[symbol] for symbol in symbols]
+        results = self.stock_client.get_stock_bars(request_params)
+        return results
