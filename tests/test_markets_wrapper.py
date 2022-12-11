@@ -66,14 +66,14 @@ class UniversalWrapperTest(unittest.TestCase):
         self.assertIsInstance(isin_result["US02079K3059"][0]["t"], str)
         self.assertIsInstance(isin_result["US02079K3059"][0]["o"], float)
 
-    def test_quote_stream(self):
-        async def handler(data):
-            print(data)
+    # def test_quote_stream(self):
+    #     async def handler(data):
+    #         print(data)
+    #
+    #     self.wrapper.start_quote_stream(handler, "AAPL")
 
-        self.wrapper.start_quote_stream(handler, "AAPL")
-
-    def test_news_stream(self):
-        async def handler(data):
-            print(data)
-
-        self.wrapper.start_news_stream(handler, "AAPL")
+    # def test_news_stream(self):
+    #     async def handler(data):
+    #         print(data)
+    #
+    #     self.wrapper.start_news_stream(handler, "AAPL")

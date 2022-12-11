@@ -1,6 +1,9 @@
+import json
+
+import requests
+
 from trading.lemon_markets.credentials import market_data_key
 from trading.lemon_markets.helpers import concat_ISINs
-import requests, json
 
 
 class LemonMarketsWrapper:
