@@ -17,27 +17,15 @@ class AlpacaMarketWrapper:
                                           base_url=URL("wss://stream.data.alpaca.markets/v1beta1/news"),
                                           raw_data=True)
 
-    async def quote_handler(self, quote):
-        pass
-
-    async def news_handler(self, news):
-        pass
-
-    def start_quote_stream(self, symbols):
-        self.quote_stream.subscribe_quotes(self.quote_handler, symbols)
+    def start_quote_stream(self, handler, symbols):
+        self.quote_stream.subscribe_quotes(handler, symbols)
         self.quote_stream.run()
 
-    def start_news_stream(self, symbols=None):
+    def start_news_stream(self, handler, symbols=None):
         if symbols is None:
             symbols = ["*"]
-        self.news_stream.subscribe_news(self.news_stream, symbols)
-        self.news_stream.run()
-
-    def stop_quote_stream(self):
-        self.quote_stream.close()
-
-    def stop_news_stream(self):
-        self.news_stream.close()
+        self.news_stream.subscribe_news(handler, symbols)
+        # self.news_stream.run()
 
     def get_quote_by_symbol(self, symbols):
         request_params = StockLatestQuoteRequest(symbol_or_symbols=symbols)
