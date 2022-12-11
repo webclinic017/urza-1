@@ -9,51 +9,62 @@ class UniversalWrapperTest(unittest.TestCase):
         self.wrapper = UniversalMarketWrapper()
 
     def test_get_latest_quote(self):
-        result_symbol = self.wrapper.get_quote("AAPL")
-        print(result_symbol)
-        self.assertIsInstance(result_symbol.keys()[0], str)
-        self.assertTrue(isinstance(result_symbol.values()[0].values()[0], (float, int)))
+        symbol_result = self.wrapper.get_quote("AAPL")
+        isin_result = self.wrapper.get_quote("US0378331005")
 
-        result_isin = self.wrapper.get_quote("US0378331005")
-        print(result_isin)
-        self.assertIsInstance(result_isin[0], str)
-        self.assertTrue(isinstance(result_isin[1], (float, int)))
+        # Check datetime
+        self.assertIsInstance(symbol_result["AAPL"]["t"], str)
+        self.assertIsInstance(isin_result["US0378331005"]["t"], str)
+        # Check ask price
+        self.assertTrue(isinstance(symbol_result["AAPL"]["a_p"], (float, int)))
+        self.assertTrue(isinstance(isin_result["US0378331005"]["a_p"], (float, int)))
 
     def test_get_multi_quote(self):
-        result_symbol = self.wrapper.get_quote(["AAPL", "GOOGL"])
-        self.assertIsInstance(result_symbol, list)
-        self.assertIsInstance(result_symbol[0][0], str)
-        self.assertTrue(isinstance(result_symbol[0][1], (float, int)))
+        symbol_result = self.wrapper.get_quote(["AAPL", "GOOGL"])
+        isin_result = self.wrapper.get_quote(["US0378331005", "US02079K3059"])
 
-        result_isin = self.wrapper.get_quote(["US0378331005", "US02079K3059"])
-        self.assertIsInstance(result_isin, list)
-        self.assertIsInstance(result_isin[0][0], str)
-        self.assertTrue(isinstance(result_isin[0][1], (float, int)))
+        # Check datetime
+        self.assertIsInstance(symbol_result["GOOGL"]["t"], str)
+        self.assertIsInstance(isin_result["US02079K3059"]["t"], str)
+        # Check ask price
+        self.assertTrue(isinstance(symbol_result["GOOGL"]["a_p"], (float, int)))
+        self.assertTrue(isinstance(isin_result["US02079K3059"]["a_p"], (float, int)))
 
     def test_get_ohlc_data(self):
-        result = self.wrapper.get_ohlc_data("US0378331005",
-                                            start_date=datetime.now() - timedelta(days=5),
-                                            frequency="minutely")
-        self.assertIsInstance(result, list)
-        self.assertIsInstance(result[0], dict)
-        self.assertIsInstance(result[0]["c"], float)
-        self.assertIsInstance(result[0]["h"], float)
-        self.assertIsInstance(result[0]["l"], float)
-        self.assertIsInstance(result[0]["o"], float)
-        self.assertIsInstance(result[0]["t"], str)
+        symbol_result = self.wrapper.get_ohlc_data("AAPL",
+                                                   start_date=datetime.now() - timedelta(days=5),
+                                                   frequency="daily")
+        isin_result = self.wrapper.get_ohlc_data("US0378331005",
+                                                 start_date=datetime.now() - timedelta(days=5),
+                                                 frequency="daily")
+
+        self.assertIsInstance(symbol_result["AAPL"], list)
+        self.assertIsInstance(symbol_result["AAPL"][0], dict)
+        self.assertIsInstance(symbol_result["AAPL"][0]["t"], str)
+        self.assertIsInstance(symbol_result["AAPL"][0]["o"], float)
+
+        self.assertIsInstance(isin_result["US0378331005"], list)
+        self.assertIsInstance(isin_result["US0378331005"][0], dict)
+        self.assertIsInstance(isin_result["US0378331005"][0]["t"], str)
+        self.assertIsInstance(isin_result["US0378331005"][0]["o"], float)
 
     def test_get_multi_ohlc_data(self):
-        result = self.wrapper.get_ohlc_data(["US0378331005", "US02079K3059"],
-                                            start_date=datetime.now() - timedelta(days=5),
-                                            frequency="minutely")
-        self.assertIsInstance(result, list)
-        self.assertIsInstance(result[0], list)
-        self.assertIsInstance(result[0][0], dict)
-        self.assertIsInstance(result[0][0]["c"], float)
-        self.assertIsInstance(result[0][0]["h"], float)
-        self.assertIsInstance(result[0][0]["l"], float)
-        self.assertIsInstance(result[0][0]["o"], float)
-        self.assertIsInstance(result[0][0]["t"], str)
+        symbol_result = self.wrapper.get_ohlc_data(["AAPL", "GOOGL"],
+                                                   start_date=datetime.now() - timedelta(days=5),
+                                                   frequency="daily")
+        isin_result = self.wrapper.get_ohlc_data(["US0378331005", "US02079K3059"],
+                                                 start_date=datetime.now() - timedelta(days=5),
+                                                 frequency="daily")
+
+        self.assertIsInstance(symbol_result["GOOGL"], list)
+        self.assertIsInstance(symbol_result["GOOGL"][0], dict)
+        self.assertIsInstance(symbol_result["GOOGL"][0]["t"], str)
+        self.assertIsInstance(symbol_result["GOOGL"][0]["o"], float)
+
+        self.assertIsInstance(isin_result["US02079K3059"], list)
+        self.assertIsInstance(isin_result["US02079K3059"][0], dict)
+        self.assertIsInstance(isin_result["US02079K3059"][0]["t"], str)
+        self.assertIsInstance(isin_result["US02079K3059"][0]["o"], float)
 
     # def test_quote_stream(self):
     #     self.wrapper.test = None
