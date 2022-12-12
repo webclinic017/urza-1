@@ -1,8 +1,8 @@
-from trading.lemon_markets.lemon_markets_wrapper import LemonMarketsWrapper
-from trading.alpaca.alpaca_market_wrapper import AlpacaMarketWrapper
+from trading.alpaca.alpaca_market import AlpacaMarketWrapper
+from trading.lemon_markets.lemon_market import LemonMarketsWrapper
 
 
-class UniversalMarketWrapper(LemonMarketsWrapper, AlpacaMarketWrapper):
+class MarketWrapper(LemonMarketsWrapper, AlpacaMarketWrapper):
     def __init__(self):
         LemonMarketsWrapper.__init__(self)
         AlpacaMarketWrapper.__init__(self)
