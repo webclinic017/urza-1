@@ -1,12 +1,13 @@
+import asyncio
 import unittest
 from datetime import datetime, timedelta
 
-from trading.universal_market_wrapper import UniversalMarketWrapper
+from trading.market_wrapper import MarketWrapper
 
 
-class UniversalWrapperTest(unittest.TestCase):
+class MarketsWrapperTest(unittest.TestCase):
     def setUp(self):
-        self.wrapper = UniversalMarketWrapper()
+        self.wrapper = MarketWrapper()
 
     def test_get_latest_quote(self):
         symbol_result = self.wrapper.get_quote("AAPL")
@@ -66,14 +67,25 @@ class UniversalWrapperTest(unittest.TestCase):
         self.assertIsInstance(isin_result["US02079K3059"][0]["t"], str)
         self.assertIsInstance(isin_result["US02079K3059"][0]["o"], float)
 
-    # def test_quote_stream(self):
-    #     async def handler(data):
-    #         print(data)
-    #
-    #     self.wrapper.start_quote_stream(handler, "AAPL")
 
-    # def test_news_stream(self):
-    #     async def handler(data):
-    #         print(data)
-    #
-    #     self.wrapper.start_news_stream(handler, "AAPL")
+class TestWebsocketStreams(unittest.TestCase):
+    def setUp(self):
+        self.wrapper = MarketWrapper()
+
+    def test_quote_stream(self):
+        async def handler(data):
+            print(data)
+
+        self.wrapper.start_quote_stream(handler, "AAPL")
+        asyncio.sleep(1)
+        self.wrapper.stop_quote_stream()
+
+    def test_news_stream(self):
+        async def handler(data):
+            print(data)
+
+        loop = asyncio.get_event_loop()
+        task = loop.create_task(self.wrapper._news_stream(handler))
+        loop.run_forever()
+        asyncio.sleep(1)
+        self.wrapper.stop_news_stream()
