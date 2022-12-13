@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from trading.market_wrapper import MarketWrapper
 
 
-class MarketsWrapperTest(unittest.TestCase):
+class MarketWrapperTest(unittest.TestCase):
     def setUp(self):
         self.wrapper = MarketWrapper()
 
@@ -68,24 +68,24 @@ class MarketsWrapperTest(unittest.TestCase):
         self.assertIsInstance(isin_result["US02079K3059"][0]["o"], float)
 
 
-class TestWebsocketStreams(unittest.TestCase):
+class TestWebsocketStreams(unittest.IsolatedAsyncioTestCase):
     def setUp(self):
         self.wrapper = MarketWrapper()
 
-    def test_quote_stream(self):
+    async def test_quote_stream(self):
         async def handler(data):
-            print(data)
-
-        self.wrapper.start_quote_stream(handler, "AAPL")
-        asyncio.sleep(1)
-        self.wrapper.stop_quote_stream()
-
-    def test_news_stream(self):
-        async def handler(data):
-            print(data)
+            self.assertTrue(data == "success" or data == "subscription")
 
         loop = asyncio.get_event_loop()
-        task = loop.create_task(self.wrapper._news_stream(handler))
-        loop.run_forever()
-        asyncio.sleep(1)
-        self.wrapper.stop_news_stream()
+        task = loop.create_task(self.wrapper.start_quote_stream(handler, "AAPL"))
+        await asyncio.sleep(1)
+        await self.wrapper.stop_news_stream()
+
+    async def test_news_stream(self):
+        async def handler(data):
+            self.assertTrue(data == "success" or data == "subscription")
+
+        loop = asyncio.get_event_loop()
+        task = loop.create_task(self.wrapper.start_news_stream(handler))
+        await asyncio.sleep(1)
+        await self.wrapper.stop_news_stream()

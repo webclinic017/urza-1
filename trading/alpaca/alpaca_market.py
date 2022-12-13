@@ -1,5 +1,3 @@
-import asyncio
-
 import msgpack
 import websockets
 from alpaca.data.historical import StockHistoricalDataClient
@@ -39,44 +37,48 @@ class AlpacaMarketWrapper:
         results = self.stock_client.get_stock_bars(request_params)
         return results
 
-    async def _quote_stream(self, handler, quotes):
+    async def start_quote_stream(self, handler, quotes):
         uri = "wss://stream.data.alpaca.markets/v2/iex"
         async with websockets.connect(uri, extra_headers={"Content-Type": "application/msgpack"}) as ws:
             r = await ws.recv()
-            print(msgpack.unpackb(r))
+            await handler(msgpack.unpackb(r)[0]["T"])
+
+            # authenticate
             await ws.send(msgpack.packb({'action': 'auth', 'key': api_key, 'secret': secret_key}))
             r = await ws.recv()
-            print(msgpack.unpackb(r))
+            await handler(msgpack.unpackb(r)[0]["T"])
+
             # If only a single quote was given
             if isinstance(quotes, str):
                 quotes = [quotes]
+            # subscribe
             await ws.send(msgpack.packb({"action": "subscribe", "quotes": quotes}))
             r = await ws.recv()
-            print(msgpack.unpackb(r))
+            await handler(msgpack.unpackb(r)[0]["T"])
+
             while not self.close_quote_con:
                 r = await ws.recv()
-                await handler(r)
+                await handler(msgpack.unpackb(r))
 
-    async def _news_stream(self, handler):
+    async def start_news_stream(self, handler):
         async with websockets.connect("wss://stream.data.alpaca.markets/v1beta1/news",
                                       extra_headers={"Content-Type": "application/msgpack"}) as ws:
             r = await ws.recv()
-            print(msgpack.unpackb(r))
+            await handler(msgpack.unpackb(r)[0]["T"])
+
+            # authenticate
             await ws.send(msgpack.packb({'action': 'auth', 'key': api_key, 'secret': secret_key}))
             r = await ws.recv()
-            print(msgpack.unpackb(r))
+            await handler(msgpack.unpackb(r)[0]["T"])
+
+            # subscribe
             await ws.send(msgpack.packb({"action": "subscribe", "news": ["*"]}))
             r = await ws.recv()
-            print(msgpack.unpackb(r))
+            await handler(msgpack.unpackb(r)[0]["T"])
+
             while not self.close_news_con:
                 r = await ws.recv()
-                await handler(r)
-
-    async def start_quote_stream(self, handler, quotes):
-        asyncio.run(self._quote_stream(handler, quotes))
-
-    async def start_news_stream(self, handler):
-        asyncio.run(self._news_stream(handler))
+                await handler(msgpack.unpackb(r))
 
     async def stop_quote_stream(self):
         self.close_quote_con = True
