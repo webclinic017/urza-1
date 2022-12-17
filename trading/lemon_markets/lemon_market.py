@@ -6,7 +6,7 @@ from trading.lemon_markets.credentials import market_data_key
 from trading.lemon_markets.helpers import concat_ISINs
 
 
-class LemonMarketsWrapper:
+class LemonMarketWrapper:
     def __init__(self):
         self.base_url = "https://data.lemon.markets/v1/"
 
