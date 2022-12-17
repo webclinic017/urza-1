@@ -1,10 +1,10 @@
 from trading.alpaca.alpaca_market import AlpacaMarketWrapper
-from trading.lemon_markets.lemon_market import LemonMarketsWrapper
+from trading.lemon_markets.lemon_market import LemonMarketWrapper
 
 
-class MarketWrapper(LemonMarketsWrapper, AlpacaMarketWrapper):
+class MarketWrapper(LemonMarketWrapper, AlpacaMarketWrapper):
     def __init__(self):
-        LemonMarketsWrapper.__init__(self)
+        LemonMarketWrapper.__init__(self)
         AlpacaMarketWrapper.__init__(self)
 
     def get_quote(self, symbols_or_isins):
