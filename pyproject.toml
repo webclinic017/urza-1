@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "urza"
+version = "0.1.0"
+description = ""
+authors = ["Jaanis Fehling"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+alpaca-py = "^0.6.1"
+django = "^4.1.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

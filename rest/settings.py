@@ -74,10 +74,11 @@ WSGI_APPLICATION = 'rest.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'OPTIONS': {
-            'service': 'my_service',
-            'passfile': '.my_pgpass',
-        },
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'jaanis',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
