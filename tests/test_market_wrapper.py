@@ -2,6 +2,7 @@ import asyncio
 import unittest
 from datetime import datetime, timedelta
 
+from trading.lemon_markets.helpers import *
 from trading.market_wrapper import MarketWrapper
 
 
@@ -89,3 +90,16 @@ class TestWebsocketStreams(unittest.IsolatedAsyncioTestCase):
         task = loop.create_task(self.wrapper.start_news_stream(handler))
         await asyncio.sleep(1)
         await self.wrapper.stop_news_stream()
+
+
+class HelpersTest(unittest.TestCase):
+
+    def test_format_currency(self):
+        self.assertEqual(format_currency(5), 50000)
+
+    def test_create_idempotency(self):
+        self.assertNotEqual(create_idempotency(), create_idempotency())
+
+    def test_concat_ISINs(self):
+        self.assertEqual(concat_ISINs(["US0378331005", "US02079K3059"]), "US0378331005,US02079K3059")
+        self.assertEqual(concat_ISINs("US0378331005"), "US0378331005")

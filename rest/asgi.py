@@ -12,15 +12,15 @@ import os
 from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
 
-import rest_apps
+from rest_apps.trading.routing import websocket_urlpatterns as trading_websocket_urlpatterns
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'rest.settings')
 
 application = ProtocolTypeRouter(
     {
         "http": get_asgi_application(),
-        'websocket': URLRouter(
-            rest_apps.trading.websocket_urlpatterns
+        "websocket": URLRouter(
+            trading_websocket_urlpatterns
         ),
     }
 )
