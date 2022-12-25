@@ -1,6 +1,11 @@
 from django.db import models
 
 
+class Instrument(models.Model):
+    isin = models.CharField(max_length=12, null=True)
+    symbol = models.CharField(max_length=5, null=True)
+
+
 class Article(models.Model):
     article_id = models.IntegerField(primary_key=True)
     headline = models.CharField(max_length=128)
@@ -12,8 +17,3 @@ class Article(models.Model):
     created = models.DateTimeField(null=True)
     updated = models.DateTimeField(null=True)
     source = models.CharField(max_length=64)
-
-
-class Instrument(models.Model):
-    isin = models.CharField(max_length=12, null=True)
-    symbol = models.CharField(max_length=5, null=True)
