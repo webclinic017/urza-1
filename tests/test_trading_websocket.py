@@ -1,3 +1,4 @@
+from channels.layers import get_channel_layer
 from channels.testing import WebsocketCommunicator
 from django.test import TestCase
 
@@ -10,9 +11,11 @@ class TradingTest(TestCase):
         communicator = WebsocketCommunicator(TradingConsumer.as_asgi(), "/ws/trading/")
         connected, subprotocol = await communicator.connect()
         self.assertTrue(connected)
-        # Test sending text
-        await communicator.send_to(text_data="hello")
+
+        # Send (news) json
+        channel_layer = get_channel_layer()
+        await channel_layer.group_send("trading", {"test": "test"})
         response = await communicator.receive_from()
-        self.assertEqual(response, "hello")
-        # Close
+        self.assertEqual(response, {"status": "Ok"})
+
         await communicator.disconnect()
