@@ -1,5 +1,5 @@
 """
-ASGI config for rest project.
+ASGI config for server project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -12,9 +12,9 @@ import os
 from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
 
-from rest_apps.trading.routing import websocket_urlpatterns as trading_websocket_urlpatterns
+from server_apps.trading.routing import websocket_urlpatterns as trading_websocket_urlpatterns
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'rest.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'server.settings')
 
 application = ProtocolTypeRouter(
     {

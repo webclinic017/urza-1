@@ -13,7 +13,7 @@ class Article(models.Model):
     url = models.CharField(max_length=255)
     text = models.TextField()
     summary = models.CharField(max_length=255, null=True)
-    instrument = models.ManyToManyField(Instrument, null=True)
+    instrument = models.ManyToManyField(Instrument)
     created = models.DateTimeField(null=True)
     updated = models.DateTimeField(null=True)
     source = models.CharField(max_length=64)

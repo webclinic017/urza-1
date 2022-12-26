@@ -1,10 +1,10 @@
 from channels.testing import WebsocketCommunicator
 from django.test import TestCase
 
-from rest_apps.trading.consumers import TradingConsumer
+from server_apps.trading.consumers import TradingConsumer
 
 
-class MyTests(TestCase):
+class TradingTest(TestCase):
 
     async def test_trading_consumer(self):
         communicator = WebsocketCommunicator(TradingConsumer.as_asgi(), "/ws/trading/")
