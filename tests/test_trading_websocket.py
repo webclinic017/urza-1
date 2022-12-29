@@ -27,7 +27,7 @@ class TestTradingWebsocket:
             path='/ws/trading/'
         )
         await communicator.connect()
-        await communicator.send_json_to({"test": "test"})
+        await communicator.send_json_to({"message": "test"})
         response = await communicator.receive_json_from()
-        assert response == {"status": "Received Trade"}
+        assert response == {"message": "test"}
         await communicator.disconnect()
