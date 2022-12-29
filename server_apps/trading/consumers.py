@@ -19,8 +19,8 @@ class TradingConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         print(text_data)
-        await self.channel_layer.group_send(text_data={"status": "Ok"})
+        await self.channel_layer.group_send(text_data={"status": "Received Trade"})
 
     # Receive news article and send to client
     async def new_article(self, article):
-        await self.channel_layer.group_send(text_data=article)
+        await self.channel_layer.group_send(text_data=json.dumps(article))
