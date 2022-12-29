@@ -9,7 +9,7 @@ async def start_alpaca_news_stream():
     async def handler(data):
         # Redirect to Django Channel
         channel_layer = get_channel_layer()
-        await channel_layer.group_send("trading", data)
+        await channel_layer.group_send("trading", {"type": "news_article", "data": data})
 
     wrapper = MarketWrapper()
 

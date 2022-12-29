@@ -14,7 +14,7 @@ TEST_CHANNEL_LAYERS = {
 class TestTradingWebsocket:
     async def test_connect(self, settings):
         settings.CHANNEL_LAYERS = TEST_CHANNEL_LAYERS
-        communicator = WebsocketCommunicator(application=application, path="/ws/trading/")
+        communicator = WebsocketCommunicator(application=application, path="/ws/news/")
         connected, _ = await communicator.connect()
         assert connected
 
@@ -24,10 +24,10 @@ class TestTradingWebsocket:
         settings.CHANNEL_LAYERS = TEST_CHANNEL_LAYERS
         communicator = WebsocketCommunicator(
             application=application,
-            path='/ws/trading/'
+            path='/ws/news/'
         )
         await communicator.connect()
-        await communicator.send_json_to({"message": "test"})
+        await communicator.send_json_to({"data": "test"})
         response = await communicator.receive_json_from()
-        assert response == {"message": "test"}
+        assert response == {"data": "test"}
         await communicator.disconnect()
