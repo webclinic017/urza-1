@@ -18,9 +18,14 @@ class TradingConsumer(AsyncWebsocketConsumer):
     # Receive trade from client
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        print(text_data)
-        await self.channel_layer.group_send(text_data={"status": "Received Trade"})
+        message = text_data_json["message"]
+        await self.channel_layer.group_send("trading", {"type": "trade_response", "message": message})
 
-    # Receive news article and send to client
+    # Send news article to client
     async def new_article(self, article):
-        await self.channel_layer.group_send(text_data=json.dumps(article))
+        await self.channel_layer.group_send("trading", json.dumps(article))
+
+    # Send trade response back to client
+    async def trade_response(self, event):
+        message = event["message"]
+        await self.send(text_data=json.dumps({"message": message}))
