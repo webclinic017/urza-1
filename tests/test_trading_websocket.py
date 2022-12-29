@@ -1,8 +1,7 @@
 import pytest
-from channels.layers import get_channel_layer
 from channels.testing import WebsocketCommunicator
 
-from server_apps.trading.consumers import TradingConsumer
+from server.asgi import application
 
 TEST_CHANNEL_LAYERS = {
     'default': {
@@ -12,17 +11,23 @@ TEST_CHANNEL_LAYERS = {
 
 
 @pytest.mark.asyncio
-class TestTrading:
-    async def test_trading_websocket(self, settings):
+class TestTradingWebsocket:
+    async def test_connect(self, settings):
         settings.CHANNEL_LAYERS = TEST_CHANNEL_LAYERS
-        communicator = WebsocketCommunicator(TradingConsumer.as_asgi(), "/ws/trading/")
-        connected, subprotocol = await communicator.connect()
+        communicator = WebsocketCommunicator(application=application, path="/ws/trading/")
+        connected, _ = await communicator.connect()
         assert connected
 
-        # Send (news) json
-        channel_layer = get_channel_layer()
-        await channel_layer.group_send("trading", {"test": "test"})
-        response = await communicator.receive_from()
-        assert response == {"status": "Received Trade"}
+        await communicator.disconnect()
 
+    async def test_can_send_and_receive_messages(self, settings):
+        settings.CHANNEL_LAYERS = TEST_CHANNEL_LAYERS
+        communicator = WebsocketCommunicator(
+            application=application,
+            path='/ws/trading/'
+        )
+        await communicator.connect()
+        await communicator.send_json_to({"test": "test"})
+        response = await communicator.receive_json_from()
+        assert response == {"status": "Received Trade"}
         await communicator.disconnect()
