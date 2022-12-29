@@ -17,3 +17,14 @@ class Article(models.Model):
     created = models.DateTimeField(null=True)
     updated = models.DateTimeField(null=True)
     source = models.CharField(max_length=64)
+
+
+class Trader(models.Model):
+    name = models.CharField(max_length=64)
+
+
+class Trade(models.Model):
+    trade_date = models.DateTimeField()
+    instrument = models.ForeignKey(Instrument)
+    article = models.ForeignKey(Article)
+    trader = models.ForeignKey(Trader)
