@@ -4,22 +4,24 @@ from alpaca.data.historical import StockHistoricalDataClient
 from alpaca.data.requests import StockLatestQuoteRequest, StockBarsRequest
 from alpaca.data.timeframe import TimeFrame
 
-from trading.alpaca.credentials import api_key, secret_key
+from market.alpaca.credentials import api_key, secret_key
 
 
 class AlpacaMarketWrapper:
     def __init__(self):
-        self.stock_client = StockHistoricalDataClient(api_key, secret_key, raw_data=True)
         self.close_quote_con = False
         self.close_news_con = False
 
-    def get_quote_by_symbol(self, symbols):
+    @staticmethod
+    def get_quote_by_symbol(symbols):
+        stock_client = StockHistoricalDataClient(api_key, secret_key, raw_data=True)
         request_params = StockLatestQuoteRequest(symbol_or_symbols=symbols)
-        quotes = self.stock_client.get_stock_latest_quote(request_params)
+        quotes = stock_client.get_stock_latest_quote(request_params)
         return {symbol: {"t": quotes[symbol]["t"], "a_p": quotes[symbol]["ap"], "a_s": quotes[symbol]["as"],
                          "b_p": quotes[symbol]["bp"], "b_s": quotes[symbol]["bs"]} for symbol in quotes.keys()}
 
-    def get_ohlc_data_by_symbol(self, symbols, start_date, frequency):
+    @staticmethod
+    def get_ohlc_data_by_symbol(symbols, start_date, frequency):
         if frequency.startswith("da"):
             frequency = TimeFrame.Day
         elif frequency.startswith("month"):
@@ -33,8 +35,9 @@ class AlpacaMarketWrapper:
         else:
             ValueError("Invalid frequency specified.")
 
+        stock_client = StockHistoricalDataClient(api_key, secret_key, raw_data=True)
         request_params = StockBarsRequest(symbol_or_symbols=symbols, timeframe=frequency, start=start_date)
-        results = self.stock_client.get_stock_bars(request_params)
+        results = stock_client.get_stock_bars(request_params)
         return results
 
     async def start_quote_stream(self, handler, quotes):
