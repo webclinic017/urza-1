@@ -2,7 +2,7 @@ import json
 
 import requests
 
-from market.lemon_markets.credentials import market_data_key
+from trading.lemon_markets.credentials import market_data_key
 from market.lemon_markets.utils import concat_ISINs
 
 
@@ -40,7 +40,7 @@ class LemonMarketWrapper:
             response = {isin: [] for isin in ISINs}
         for dp in results:
             response[dp["isin"]].append(
-                {"t": dp["t"], "o": dp["o"], "h": dp["h"], "l": dp["l"], "c": dp["c"], "v": dp["v"], "pbv": dp["pbv"]})
+                {"x": dp["t"], "open": dp["o"], "high": dp["h"], "low": dp["l"], "close": dp["c"], "v": dp["v"]})
         return response
 
     @staticmethod

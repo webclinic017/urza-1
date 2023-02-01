@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 
 import pytest
 
-import market.lemon_markets.credentials
 from market.lemon_markets.utils import *
 from market.market_wrapper import MarketWrapper
 
@@ -47,13 +46,13 @@ class TestMarketWrapper:
 
         assert isinstance(symbol_result["AAPL"], list)
         assert isinstance(symbol_result["AAPL"][0], dict)
-        assert isinstance(symbol_result["AAPL"][0]["t"], str)
-        assert isinstance(symbol_result["AAPL"][0]["o"], float)
+        assert isinstance(symbol_result["AAPL"][0]["x"], str)
+        assert isinstance(symbol_result["AAPL"][0]["open"], float)
 
         assert isinstance(isin_result["US0378331005"], list)
         assert isinstance(isin_result["US0378331005"][0], dict)
-        assert isinstance(isin_result["US0378331005"][0]["t"], str)
-        assert isinstance(isin_result["US0378331005"][0]["o"], float)
+        assert isinstance(isin_result["US0378331005"][0]["x"], str)
+        assert isinstance(isin_result["US0378331005"][0]["open"], float)
 
     def test_get_multi_ohlc_data(self, wrapper):
         symbol_result = wrapper.get_ohlc_data(["AAPL", "GOOGL"],
@@ -65,13 +64,13 @@ class TestMarketWrapper:
 
         assert isinstance(symbol_result["GOOGL"], list)
         assert isinstance(symbol_result["GOOGL"][0], dict)
-        assert isinstance(symbol_result["GOOGL"][0]["t"], str)
-        assert isinstance(symbol_result["GOOGL"][0]["o"], float)
+        assert isinstance(symbol_result["GOOGL"][0]["x"], str)
+        assert isinstance(symbol_result["GOOGL"][0]["open"], float)
 
         assert isinstance(isin_result["US02079K3059"], list)
         assert isinstance(isin_result["US02079K3059"][0], dict)
-        assert isinstance(isin_result["US02079K3059"][0]["t"], str)
-        assert isinstance(isin_result["US02079K3059"][0]["o"], float)
+        assert isinstance(isin_result["US02079K3059"][0]["x"], str)
+        assert isinstance(isin_result["US02079K3059"][0]["open"], float)
 
 
 @pytest.mark.asyncio
@@ -109,10 +108,8 @@ class TestHelpers:
         assert concat_ISINs("US0378331005") == "US0378331005"
 
     def test_get_key_and_base_url(self):
-        key, base_url = get_key_and_base_url(True)
+        base_url = get_base_url(True)
         assert base_url == "https://paper-trading.lemon.markets/v1/"
-        assert key == market.lemon_markets.credentials.paper_trading_key
 
-        key, base_url = get_key_and_base_url(False)
+        base_url = get_base_url(False)
         assert base_url == "https://trading.lemon.markets/v1/"
-        assert key == market.lemon_markets.credentials.trading_key
