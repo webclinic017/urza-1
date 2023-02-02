@@ -46,12 +46,12 @@ class TestMarketWrapper:
 
         assert isinstance(symbol_result["AAPL"], list)
         assert isinstance(symbol_result["AAPL"][0], dict)
-        assert isinstance(symbol_result["AAPL"][0]["x"], str)
+        assert isinstance(symbol_result["AAPL"][0]["t"], str)
         assert isinstance(symbol_result["AAPL"][0]["open"], float)
 
         assert isinstance(isin_result["US0378331005"], list)
         assert isinstance(isin_result["US0378331005"][0], dict)
-        assert isinstance(isin_result["US0378331005"][0]["x"], str)
+        assert isinstance(isin_result["US0378331005"][0]["t"], str)
         assert isinstance(isin_result["US0378331005"][0]["open"], float)
 
     def test_get_multi_ohlc_data(self, wrapper):
@@ -64,12 +64,12 @@ class TestMarketWrapper:
 
         assert isinstance(symbol_result["GOOGL"], list)
         assert isinstance(symbol_result["GOOGL"][0], dict)
-        assert isinstance(symbol_result["GOOGL"][0]["x"], str)
+        assert isinstance(symbol_result["GOOGL"][0]["t"], str)
         assert isinstance(symbol_result["GOOGL"][0]["open"], float)
 
         assert isinstance(isin_result["US02079K3059"], list)
         assert isinstance(isin_result["US02079K3059"][0], dict)
-        assert isinstance(isin_result["US02079K3059"][0]["x"], str)
+        assert isinstance(isin_result["US02079K3059"][0]["t"], str)
         assert isinstance(isin_result["US02079K3059"][0]["open"], float)
 
 

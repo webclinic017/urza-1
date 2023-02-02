@@ -4,7 +4,7 @@ from alpaca.data.historical import StockHistoricalDataClient
 from alpaca.data.requests import StockLatestQuoteRequest, StockBarsRequest
 from alpaca.data.timeframe import TimeFrame
 
-from trading.alpaca.credentials import api_key, secret_key
+from market.alpaca.credentials import api_key, secret_key
 
 
 class AlpacaMarketWrapper:
@@ -46,7 +46,7 @@ class AlpacaMarketWrapper:
         for symbol in results:
             for dp in results[symbol]:
                 response[symbol].append(
-                    {"x": dp["t"], "open": dp["o"], "high": dp["h"], "low": dp["l"], "close": dp["c"], "v": dp["v"]})
+                    {"t": dp["t"], "open": dp["o"], "high": dp["h"], "low": dp["l"], "close": dp["c"], "v": dp["v"]})
         return response
 
     async def start_quote_stream(self, handler, quotes):
