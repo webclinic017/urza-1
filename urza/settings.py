@@ -32,9 +32,8 @@ INSTALLED_APPS = [
     'daphne',
     'channels',
     'news',
-    'market',
-    'trading',
-    'account',
+    # 'market',
+    # 'account',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -101,7 +100,7 @@ DATABASES = {
         'USER': 'postgres',
         'PASSWORD': 'mysecretpassword',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': '32768',
     }
 }
 

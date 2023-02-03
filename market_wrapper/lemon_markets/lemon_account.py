@@ -12,7 +12,7 @@ class LemonAccountWrapper:
             request = requests.get(f"{get_base_url(paper)}account/",
                                    headers={"Authorization": f"Bearer {trading_key}"})
         except requests.exceptions.RequestException:
-            return {"status": "error"}
+            return {"status": "error", "error_type": "connection"}
         return request.json()
 
     @staticmethod
@@ -24,7 +24,7 @@ class LemonAccountWrapper:
                                                      "idempotency": create_idempotency()}),
                                     headers={"Authorization": f"Bearer {trading_key}"})
         except requests.exceptions.RequestException:
-            return {"status": "error"}
+            return {"status": "error", "error_type": "connection"}
         return request.json()
 
     @staticmethod
@@ -33,23 +33,32 @@ class LemonAccountWrapper:
             request = requests.get(f"{get_base_url(paper)}account/withdrawals",
                                    headers={"Authorization": f"Bearer {trading_key}"})
         except requests.exceptions.RequestException:
-            return {"status": "error"}
+            return {"status": "error", "error_type": "connection"}
         return request.json()
 
     @staticmethod
-    def get_bank_statements(paper):
-        request = requests.get(f"{get_base_url(paper)}account/bankstatements",
-                               headers={"Authorization": f"Bearer {key}"})
+    def get_bank_statements(trading_key, paper):
+        try:
+            request = requests.get(f"{get_base_url(paper)}account/bankstatements",
+                                   headers={"Authorization": f"Bearer {trading_key}"})
+        except requests.exceptions.RequestException:
+            return {"status": "error", "error_type": "connection"}
         return request.json()
 
     @staticmethod
-    def get_documents(paper):
-        request = requests.get(f"{get_base_url(paper)}account/documents",
-                               headers={"Authorization": f"Bearer {key}"})
+    def get_documents(trading_key, paper):
+        try:
+            request = requests.get(f"{get_base_url(paper)}account/documents",
+                                   headers={"Authorization": f"Bearer {trading_key}"})
+        except requests.exceptions.RequestException:
+            return {"status": "error", "error_type": "connection"}
         return request.json()
 
     @staticmethod
-    def get_document(paper, document_id):
-        request = requests.get(f"{get_base_url(paper)}account/documents/{document_id}",
-                               headers={"Authorization": f"Bearer {key}"})
+    def get_document(trading_key, paper, document_id):
+        try:
+            request = requests.get(f"{get_base_url(paper)}account/documents/{document_id}",
+                                   headers={"Authorization": f"Bearer {trading_key}"})
+        except requests.exceptions.RequestException:
+            return {"status": "error", "error_type": "connection"}
         return request.json()

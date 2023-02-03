@@ -10,6 +10,7 @@ class LemonMarketWrapper:
     @staticmethod
     def get_quote_by_isin(market_key, ISINs):
         ISINs = concat_ISINs(ISINs)
+
         try:
             request = requests.get(f"https://data.lemon.markets/v1/quotes/latest?isin={ISINs}",
                                    headers={"Authorization": f"Bearer {market_key}"})
@@ -34,16 +35,18 @@ class LemonMarketWrapper:
         elif frequency.startswith("minute"):
             frequency = "m1"
         else:
-            ValueError("Invalid frequency specified.")
+            frequency = "d1"
+
         try:
             request = requests.get(
                 f"https://data.lemon.markets/v1/ohlc/{frequency}?isin={concat_ISINs(ISINs)}&from={start_date}",
                 headers={"Authorization": f"Bearer {market_key}"})
         except requests.exceptions.RequestException:
-            return {"status": "error"}
+            return {"status": "error", "error_type": "connection"}
+
         results = request.json()
         if results.get("status") == "error":
-            return {"status": "error"}
+            return {"status": "error", "error_type": "authentication"}
         results = results["results"]
 
         if isinstance(ISINs, str):

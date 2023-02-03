@@ -14,3 +14,7 @@ class Article(models.Model):
     class Meta:
         ordering = ["-date_time"]
         db_table = "article"
+
+
+class ConnectedUser(models.Model):
+    pass

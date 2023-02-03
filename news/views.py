@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from news.models import Article
 
 
-@login_required
+# @login_required
 def most_recent(request, n=10):
     articles = Article.objects.all()[:n].values()
-    return JsonResponse(articles)
+    return JsonResponse({"articles": list(articles)})
