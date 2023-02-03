@@ -2,26 +2,31 @@ import json
 
 import requests
 
-from market_wrapper.lemon_markets.credentials import market_data_key
 from market_wrapper.lemon_markets.utils import concat_ISINs
 
 
 class LemonMarketWrapper:
 
     @staticmethod
-    def get_quote_by_isin(ISINs):
+    def get_quote_by_isin(market_key, ISINs):
         ISINs = concat_ISINs(ISINs)
-        request = requests.get(f"https://data.lemon.markets/v1/quotes/latest?isin={ISINs}",
-                               headers={"Authorization": f"Bearer {market_data_key}"})
+        try:
+            request = requests.get(f"https://data.lemon.markets/v1/quotes/latest?isin={ISINs}",
+                                   headers={"Authorization": f"Bearer {market_key}"})
+        except requests.exceptions.RequestException:
+            return {"status": "error", "error_type": "connection"}
         results = request.json()
+        if results.get("status") == "error":
+            return {"status": "error", "error_type": "authentication"}
 
         results = results["results"]
-
-        return {result["isin"]: {"t": result["t"], "a_p": result["a"], "a_s": result["a_v"],
-                                 "b_p": result["b"], "b_s": result["b_v"]} for result in results}
+        response = {result["isin"]: {"t": result["t"], "a_p": result["a"], "a_s": result["a_v"],
+                                     "b_p": result["b"], "b_s": result["b_v"]} for result in results}
+        response.update({"status": "ok"})
+        return response
 
     @staticmethod
-    def get_ohlc_data_by_isin(ISINs, start_date, frequency):
+    def get_ohlc_data_by_isin(market_key, ISINs, start_date, frequency):
         if frequency.startswith("da"):
             frequency = "d1"
         elif frequency.startswith("hour"):
@@ -30,11 +35,16 @@ class LemonMarketWrapper:
             frequency = "m1"
         else:
             ValueError("Invalid frequency specified.")
-
-        request = requests.get(
-            f"https://data.lemon.markets/v1/ohlc/{frequency}?isin={concat_ISINs(ISINs)}&from={start_date}",
-            headers={"Authorization": f"Bearer {market_data_key}"})
-        results = request.json()["results"]
+        try:
+            request = requests.get(
+                f"https://data.lemon.markets/v1/ohlc/{frequency}?isin={concat_ISINs(ISINs)}&from={start_date}",
+                headers={"Authorization": f"Bearer {market_key}"})
+        except requests.exceptions.RequestException:
+            return {"status": "error"}
+        results = request.json()
+        if results.get("status") == "error":
+            return {"status": "error"}
+        results = results["results"]
 
         if isinstance(ISINs, str):
             response = {ISINs: []}
@@ -46,9 +56,12 @@ class LemonMarketWrapper:
         return response
 
     @staticmethod
-    def instrument_search(search):
+    def instrument_search(market_key, search):
         """Search for Name, ISIN, WKN or symbol"""
-        request = requests.get(f"https://data.lemon.markets/v1/instruments",
-                               data=json.dumps({"search": search}),
-                               headers={"Authorization": f"Bearer {market_data_key}"})
+        try:
+            request = requests.get(f"https://data.lemon.markets/v1/instruments",
+                                   data=json.dumps({"search": search}),
+                                   headers={"Authorization": f"Bearer {market_key}"})
+        except requests.exceptions.RequestException:
+            return {"status": "error", "error_type": "connection"}
         return request.json()

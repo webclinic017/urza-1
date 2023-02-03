@@ -7,24 +7,33 @@ from market_wrapper.lemon_markets.utils import format_currency, create_idempoten
 
 class LemonAccountWrapper:
     @staticmethod
-    def get_account_info(paper):
-        request = requests.get(f"{get_base_url(paper)}account/",
-                               headers={"Authorization": f"Bearer {key}"})
+    def get_account_info(trading_key, paper):
+        try:
+            request = requests.get(f"{get_base_url(paper)}account/",
+                                   headers={"Authorization": f"Bearer {trading_key}"})
+        except requests.exceptions.RequestException:
+            return {"status": "error"}
         return request.json()
 
     @staticmethod
-    def withdraw(paper, amount, pin):
-        request = requests.post(f"{get_base_url(paper)}account/withdrawals",
-                                data=json.dumps({"amount": format_currency(amount),
-                                                 "pin": pin,
-                                                 "idempotency": create_idempotency()}),
-                                headers={"Authorization": f"Bearer {key}"})
+    def withdraw(trading_key, paper, amount, pin):
+        try:
+            request = requests.post(f"{get_base_url(paper)}account/withdrawals",
+                                    data=json.dumps({"amount": format_currency(amount),
+                                                     "pin": pin,
+                                                     "idempotency": create_idempotency()}),
+                                    headers={"Authorization": f"Bearer {trading_key}"})
+        except requests.exceptions.RequestException:
+            return {"status": "error"}
         return request.json()
 
     @staticmethod
-    def get_withdrawals(paper):
-        request = requests.get(f"{get_base_url(paper)}account/withdrawals",
-                               headers={"Authorization": f"Bearer {key}"})
+    def get_withdrawals(trading_key, paper):
+        try:
+            request = requests.get(f"{get_base_url(paper)}account/withdrawals",
+                                   headers={"Authorization": f"Bearer {trading_key}"})
+        except requests.exceptions.RequestException:
+            return {"status": "error"}
         return request.json()
 
     @staticmethod

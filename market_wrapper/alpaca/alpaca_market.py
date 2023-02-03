@@ -10,7 +10,6 @@ from market_wrapper.alpaca.credentials import api_key, secret_key
 class AlpacaMarketWrapper:
     def __init__(self):
         self.close_quote_con = False
-        self.close_news_con = False
 
     @staticmethod
     def get_quote_by_symbol(symbols):
