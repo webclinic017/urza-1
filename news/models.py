@@ -18,3 +18,7 @@ class Article(models.Model):
 
 class ConnectedUser(models.Model):
     pass
+
+
+class Crawler(models.Model):
+    pass
