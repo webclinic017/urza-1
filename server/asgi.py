@@ -12,7 +12,7 @@ import os
 from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
 
-from server_apps.trading.routing import websocket_urlpatterns as trading_websocket_urlpatterns
+from server_apps.news.routing import websocket_urlpatterns as trading_websocket_urlpatterns
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'server.settings')
 

@@ -2,14 +2,11 @@ import json
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 
-from event_controller.alpaca_news import start_alpaca_news_stream
-
 
 class NewsConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
         await self.channel_layer.group_add("news", self.channel_name)
-        await start_alpaca_news_stream()
         await self.accept()
 
     async def disconnect(self, close_code):

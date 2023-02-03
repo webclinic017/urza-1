@@ -6,19 +6,6 @@ class Instrument(models.Model):
     symbol = models.CharField(max_length=5, null=True)
 
 
-class Article(models.Model):
-    article_id = models.IntegerField(primary_key=True)
-    headline = models.CharField(max_length=255)
-    author = models.CharField(max_length=255, null=True)
-    url = models.CharField()
-    text = models.TextField()
-    summary = models.CharField(null=True)
-    instrument = models.ManyToManyField(Instrument)
-    created = models.DateTimeField(null=True)
-    updated = models.DateTimeField(null=True)
-    source = models.CharField(max_length=64)
-
-
 class AlpacaCredentials(models.Model):
     paper = models.BooleanField()
     api_key = models.CharField(max_length=64)
