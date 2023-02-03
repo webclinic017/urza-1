@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
-from server_apps.news.models import Article
+from news.models import Article
 
 
 @login_required

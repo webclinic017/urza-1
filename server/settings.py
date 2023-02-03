@@ -31,7 +31,10 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'daphne',
     'channels',
-    'server_apps',
+    'news',
+    'market',
+    'trading',
+    'account',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

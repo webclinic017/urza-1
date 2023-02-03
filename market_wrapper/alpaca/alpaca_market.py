@@ -4,7 +4,7 @@ from alpaca.data.historical import StockHistoricalDataClient
 from alpaca.data.requests import StockLatestQuoteRequest, StockBarsRequest
 from alpaca.data.timeframe import TimeFrame
 
-from market.alpaca.credentials import api_key, secret_key
+from market_wrapper.alpaca.credentials import api_key, secret_key
 
 
 class AlpacaMarketWrapper:
@@ -72,28 +72,5 @@ class AlpacaMarketWrapper:
                 r = await ws.recv()
                 await handler(msgpack.unpackb(r))
 
-    async def start_news_stream(self, handler):
-        async with websockets.connect("wss://stream.data.alpaca.markets/v1beta1/news",
-                                      extra_headers={"Content-Type": "application/msgpack"}) as ws:
-            r = await ws.recv()
-            await handler(msgpack.unpackb(r)[0]["T"])
-
-            # authenticate
-            await ws.send(msgpack.packb({'action': 'auth', 'key': api_key, 'secret': secret_key}))
-            r = await ws.recv()
-            await handler(msgpack.unpackb(r)[0]["T"])
-
-            # subscribe
-            await ws.send(msgpack.packb({"action": "subscribe", "news": ["*"]}))
-            r = await ws.recv()
-            await handler(msgpack.unpackb(r)[0]["T"])
-
-            while not self.close_news_con:
-                r = await ws.recv()
-                await handler(msgpack.unpackb(r))
-
     async def stop_quote_stream(self):
         self.close_quote_con = True
-
-    async def stop_news_stream(self):
-        self.close_news_con = True

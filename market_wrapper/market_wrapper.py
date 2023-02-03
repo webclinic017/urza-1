@@ -1,5 +1,5 @@
-from market.alpaca.alpaca_market import AlpacaMarketWrapper
-from market.lemon_markets.lemon_market import LemonMarketWrapper
+from market_wrapper.alpaca.alpaca_market import AlpacaMarketWrapper
+from market_wrapper.lemon_markets.lemon_market import LemonMarketWrapper
 
 
 class MarketWrapper(LemonMarketWrapper, AlpacaMarketWrapper):

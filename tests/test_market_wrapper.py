@@ -3,8 +3,8 @@ from datetime import datetime, timedelta
 
 import pytest
 
-from market.lemon_markets.utils import *
-from market.market_wrapper import MarketWrapper
+from market_wrapper.lemon_markets.utils import *
+from market_wrapper.market_wrapper import MarketWrapper
 
 
 @pytest.fixture

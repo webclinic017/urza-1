@@ -2,8 +2,8 @@ import json
 
 import requests
 
-from market.lemon_markets.credentials import market_data_key
-from market.lemon_markets.utils import concat_ISINs
+from market_wrapper.lemon_markets.credentials import market_data_key
+from market_wrapper.lemon_markets.utils import concat_ISINs
 
 
 class LemonMarketWrapper:
@@ -13,7 +13,9 @@ class LemonMarketWrapper:
         ISINs = concat_ISINs(ISINs)
         request = requests.get(f"https://data.lemon.markets/v1/quotes/latest?isin={ISINs}",
                                headers={"Authorization": f"Bearer {market_data_key}"})
-        results = request.json()["results"]
+        results = request.json()
+
+        results = results["results"]
 
         return {result["isin"]: {"t": result["t"], "a_p": result["a"], "a_s": result["a_v"],
                                  "b_p": result["b"], "b_s": result["b_v"]} for result in results}

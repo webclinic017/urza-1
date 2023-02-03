@@ -3,7 +3,7 @@ from datetime import datetime
 import pytest
 from django.urls import reverse
 
-from server_apps.news.models import Article
+from news.models import Article
 
 
 @pytest.mark.django_db

@@ -2,7 +2,7 @@ import json
 
 import requests
 
-from market.lemon_markets.utils import format_currency, create_idempotency, get_base_url
+from market_wrapper.lemon_markets.utils import format_currency, create_idempotency, get_base_url
 
 
 class LemonAccountWrapper:
