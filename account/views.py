@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
-from market.account_wrapper import AccountWrapper
+from market_wrapper.account_wrapper import AccountWrapper
 
 
 @login_required

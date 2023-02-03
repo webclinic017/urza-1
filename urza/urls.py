@@ -1,4 +1,4 @@
-"""server URL Configuration
+"""urza URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.1/topics/http/urls/
@@ -18,7 +18,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("news/", include("news.routing")),
+    path("news/", include("news.urls")),
     path("market_wrapper/", include("market.urls")),
     path("account/", include("account.urls"))
 ]

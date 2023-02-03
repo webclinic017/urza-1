@@ -1,5 +1,5 @@
 """
-ASGI config for server project.
+ASGI config for urza project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -12,15 +12,15 @@ import os
 from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
 
-from news.routing import websocket_urlpatterns as trading_websocket_urlpatterns
+from news.routing import websocket_urlpatterns
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'server.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'urza.settings')
 
 application = ProtocolTypeRouter(
     {
         "http": get_asgi_application(),
         "websocket": URLRouter(
-            trading_websocket_urlpatterns
+            websocket_urlpatterns
         ),
     }
 )

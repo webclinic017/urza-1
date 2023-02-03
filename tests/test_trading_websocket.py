@@ -1,7 +1,7 @@
 import pytest
 from channels.testing import WebsocketCommunicator
 
-from server.asgi import application
+from urza.asgi import application
 
 TEST_CHANNEL_LAYERS = {
     'default': {

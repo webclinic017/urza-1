@@ -85,15 +85,6 @@ class TestWebsocketStreams:
         await asyncio.sleep(1)
         await wrapper.stop_news_stream()
 
-    async def test_news_stream(self, wrapper):
-        async def handler(data):
-            assert data == "success" or data == "subscription"
-
-        loop = asyncio.get_event_loop()
-        task = loop.create_task(wrapper.start_news_stream(handler))
-        await asyncio.sleep(1)
-        await wrapper.stop_news_stream()
-
 
 class TestHelpers:
 
