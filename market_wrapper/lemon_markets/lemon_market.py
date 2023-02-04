@@ -23,7 +23,6 @@ class LemonMarketWrapper:
         results = results["results"]
         response = {result["isin"]: {"t": result["t"], "a_p": result["a"], "a_s": result["a_v"],
                                      "b_p": result["b"], "b_s": result["b_v"]} for result in results}
-        response.update({"status": "ok"})
         return response
 
     @staticmethod
