@@ -5,7 +5,7 @@
 - Setup Test Setting
 - Manage test API keys to test market wrapper
 - Write Tests for every view and every consumer
-- Manage login for tests
+- ~~Manage login for tests~~
 
 ## User API Keys
 

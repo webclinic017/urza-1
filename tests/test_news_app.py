@@ -1,30 +1,50 @@
+import uuid
 from datetime import datetime
 
 import pytest
+from channels.testing import WebsocketCommunicator
 from django.urls import reverse
 
 from news.models import Article
-import pytest
-from channels.testing import WebsocketCommunicator
-
 from urza.asgi import application
 
 
+@pytest.fixture
+def test_password():
+    return "test-pwd"
+
+
+@pytest.fixture
+def create_user(db, django_user_model, test_password):
+    def make_user(**kwargs):
+        kwargs["password"] = test_password
+        if "username" not in kwargs:
+            kwargs["username"] = str(uuid.uuid4())
+        return django_user_model.objects.create_user(**kwargs)
+
+    return make_user
+
+
 @pytest.mark.django_db
-def test_create_article():
-    for i in range(10):
-        Article.objects.create(url=f"example.com/{i}", date_time=datetime.now(), headline="Example",
+def test_create_articles():
+    for i in range(5):
+        Article.objects.create(url=f"example.com/{i}", date_time=datetime(year=1970, month=1, day=1),
+                               headline="Example",
                                html="<html></html>")
-    assert Article.objects.count() == 10
+    assert Article.objects.count() == 5
 
 
 @pytest.mark.django_db
-def test_most_recent(client):
-    for i in range(2):
+def test_most_recent(client, create_user, test_password):
+    for i in range(10):
         Article.objects.create(url=f"example.com/{i}", date_time=datetime(year=1970, month=2, day=2),
                                headline="Example",
                                html="<html></html>")
+    user = create_user()
     url = reverse("news:most-recent")
+    client.login(
+        username=user.username, password=test_password
+    )
     response = client.get(url)
     assert response.status_code == 200
 
