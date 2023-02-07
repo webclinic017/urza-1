@@ -66,10 +66,10 @@ TEST_CHANNEL_LAYERS = {
 
 
 @pytest.mark.asyncio
-class TestTradingWebsocket:
+class TestNewsWebsocket:
     async def test_connect(self, settings):
         settings.CHANNEL_LAYERS = TEST_CHANNEL_LAYERS
-        communicator = WebsocketCommunicator(application=application, path="/ws/news/")
+        communicator = WebsocketCommunicator(application=application, path="/ws/news-stream/")
         connected, _ = await communicator.connect()
         assert connected
 
