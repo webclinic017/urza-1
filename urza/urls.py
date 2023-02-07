@@ -15,8 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.authtoken import views
 
 urlpatterns = [
+    path("obtain-token/", views.obtain_auth_token),
+    path('browsable-api/', include('rest_framework.urls')),
     path("admin/", admin.site.urls),
     path("news/", include("news.urls")),
     path("market_wrapper/", include("market.urls")),
