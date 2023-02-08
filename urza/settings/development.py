@@ -26,16 +26,19 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Need to create a global application main
+AUTH_USER_MODEL = 'main.User'
+
 # Application definition
 
 INSTALLED_APPS = [
-    'daphne',
-    'channels',
     'news',
-    # 'market',
-    # 'account',
+    'market',
+    'trading',
     'rest_framework',
     'rest_framework.authtoken',
+    'daphne',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

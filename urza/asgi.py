@@ -16,7 +16,7 @@ from django.core.asgi import get_asgi_application
 from news.routing import websocket_urlpatterns
 from urza.middleware import TokenAuthMiddleware
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'urza.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'urza.settings.development')
 
 application = ProtocolTypeRouter(
     {

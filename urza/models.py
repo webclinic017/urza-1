@@ -1,4 +1,12 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
+
+from news.models import Article
+
+
+# This is the global User object. Every specific subtype of User for each app has a reference to the global User
+class User(AbstractUser):
+    pass
 
 
 class Instrument(models.Model):

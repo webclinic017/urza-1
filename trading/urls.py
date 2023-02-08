@@ -1,8 +1,8 @@
 from django.urls import path
 
-from account import views
+from trading import views
 
-app_name = "account"
+app_name = "trading"
 urlpatterns = [
     path(r"info/", views.get_account_info, name="info"),
     path(r"withdraw/<int:amount>/", views.withdraw, name="info"),

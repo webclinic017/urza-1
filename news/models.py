@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -16,9 +17,7 @@ class Article(models.Model):
         db_table = "article"
 
 
-class ConnectedUser(models.Model):
-    pass
-
-
-class Crawler(models.Model):
-    pass
+class NewsUser(models.Model):
+    models.OneToOneField(User, on_delete=models.CASCADE)
+    can_send = models.BooleanField()
+    can_receive = models.BooleanField()

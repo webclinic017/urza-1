@@ -22,6 +22,6 @@ urlpatterns = [
     path('browsable-api/', include('rest_framework.urls')),
     path("admin/", admin.site.urls),
     path("news/", include("news.urls")),
-    path("market_wrapper/", include("market.urls")),
-    path("account/", include("account.urls"))
+    path("market/", include("market.urls")),
+    path("trading/", include("trading.urls"))
 ]
