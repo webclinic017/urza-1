@@ -5,7 +5,7 @@ from news.models import Article
 
 
 # This is the global User object. Every specific subtype of User for each app has a reference to the global User
-class User(AbstractUser):
+class GlobalUser(AbstractUser):
     pass
 
 
@@ -28,14 +28,14 @@ class LemonMarketsCredentials(models.Model):
     pin = models.IntegerField(max_length=16, null=True)
 
 
-class Trader(models.Model):
-    name = models.CharField(max_length=64)
-    alpaca_config = models.OneToOneField(AlpacaCredentials, on_delete=models.CASCADE)
-    lemon_markets_config = models.OneToOneField(LemonMarketsCredentials, on_delete=models.CASCADE)
+class TradingUser(models.Model):
+    global_user = models.OneToOneField(GlobalUser, on_delete=models.CASCADE)
+    alpaca_config = models.OneToOneField(AlpacaCredentials, on_delete=models.SET_NULL, null=True)
+    lemon_markets_config = models.OneToOneField(LemonMarketsCredentials, on_delete=models.SET_NULL, null=True)
 
 
 class Trade(models.Model):
     trade_date = models.DateTimeField()
     instrument = models.ForeignKey(Instrument, on_delete=models.SET_NULL)
     article = models.ForeignKey(Article, on_delete=models.SET_NULL)
-    trader = models.ForeignKey(Trader, on_delete=models.SET_NULL)
+    trader = models.ForeignKey(TradingUser, on_delete=models.SET_NULL)

@@ -1,5 +1,6 @@
-from django.contrib.auth.models import User
 from django.db import models
+
+from main.models import GlobalUser
 
 
 class Article(models.Model):
@@ -18,6 +19,6 @@ class Article(models.Model):
 
 
 class NewsUser(models.Model):
-    models.OneToOneField(User, on_delete=models.CASCADE)
+    global_user = models.OneToOneField(GlobalUser, on_delete=models.CASCADE)
     can_send = models.BooleanField()
     can_receive = models.BooleanField()

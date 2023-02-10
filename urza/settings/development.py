@@ -27,11 +27,12 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Need to create a global application main
-AUTH_USER_MODEL = 'main.User'
+AUTH_USER_MODEL = 'main.GlobalUser'
 
 # Application definition
 
 INSTALLED_APPS = [
+    'main',
     'news',
     'market',
     'trading',
