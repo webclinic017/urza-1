@@ -21,6 +21,7 @@ urlpatterns = [
     path("obtain-token/", views.obtain_auth_token),
     path('browsable-api/', include('rest_framework.urls')),
     path("admin/", admin.site.urls),
+    path("account/", include("account.urls")),
     path("news/", include("news.urls")),
     path("market/", include("market.urls")),
     path("trading/", include("trading.urls"))

@@ -1,12 +1,14 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
-
-from news.models import Article
 
 
 # This is the global User object. Every specific subtype of User for each app has a reference to the global User
-class GlobalUser(AbstractUser):
-    pass
+class GlobalUser(AbstractBaseUser):
+    email = models.EmailField(unique=True)
+    
+    USERNAME_FIELD = "email"
+    EMAIL_FIELD = "email"
+    REQUIRED_FIELDS = ["email", "password"]
 
 
 class Instrument(models.Model):
@@ -37,5 +39,5 @@ class TradingUser(models.Model):
 class Trade(models.Model):
     trade_date = models.DateTimeField()
     instrument = models.ForeignKey(Instrument, on_delete=models.SET_NULL)
-    article = models.ForeignKey(Article, on_delete=models.SET_NULL)
+    article = models.ForeignKey("news.Article", on_delete=models.SET_NULL)
     trader = models.ForeignKey(TradingUser, on_delete=models.SET_NULL)

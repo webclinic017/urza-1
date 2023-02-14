@@ -1,10 +1,12 @@
-from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 from news.models import Article
+from news.serializers import ArticleSerializer
 
 
-@login_required
+@api_view["GET"]
 def most_recent(request, n=10):
-    articles = Article.objects.all()[:n].values()
-    return JsonResponse({"articles": list(articles)})
+    articles = Article.objects.all()[:n]
+    serializer = ArticleSerializer(articles)
+    return Response(serializer.data)

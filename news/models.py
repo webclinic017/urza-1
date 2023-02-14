@@ -1,6 +1,6 @@
 from django.db import models
 
-from main.models import GlobalUser
+from account.models import GlobalUser
 
 
 class Article(models.Model):
